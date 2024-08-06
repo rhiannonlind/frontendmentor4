@@ -21,7 +21,6 @@
 
     <title>Frontend Mentor | Interactive rating component</title>
 
-    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
     <style>
       @media (min-width: 1000px) {
         .wrapper {
@@ -56,7 +55,7 @@
         width: 80%;
       }
 
-      img {
+      .star {
         width: 2vh;
         height: auto;
         padding: 2vh;
@@ -66,11 +65,13 @@
 
       h1 {
         margin: 3vh 0 0 0;
+        font-weight: 700;
       }
 
       p {
         color: hsl(217, 12%, 63%);
         font-size: 15px;
+        font-weight: 400;
         margin: 3vh 0 0 0;
         width: 95%;
       }
@@ -91,6 +92,12 @@
         color: hsl(217, 12%, 63%);
         transition: all ease 0.5ms;
       }
+
+      .selection.selected {
+        background-color: hsl(25, 97%, 53%);
+        color: white;
+      }
+
       .submission {
         display: flex;
         justify-content: center;
@@ -130,7 +137,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <img src="images/icon-star.svg" />
+      <img class="star" src="images/icon-star.svg" />
 
       <h1>How did we do?</h1>
 
@@ -139,11 +146,11 @@
         appreciated to help us improve our offering!
       </p>
       <div class="rating">
-        <button class="selection">1</button>
-        <button class="selection">2</button>
-        <button class="selection">3</button>
-        <button class="selection">4</button>
-        <button class="selection">5</button>
+        <button class="selection" data-value="1">1</button>
+        <button class="selection" data-value="2">2</button>
+        <button class="selection" data-value="3">3</button>
+        <button class="selection" data-value="4">4</button>
+        <button class="selection" data-value="5">5</button>
       </div>
       <div class="submission">
         <button class="submit">SUBMIT</button>
@@ -155,5 +162,62 @@
         >Frontend Mentor</a
       >. Coded by <a href="#">Rhiannon Lind</a>.
     </div>
+
+    <script>
+      const buttons = document.querySelectorAll(".selection");
+      let selectedValue = null;
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          buttons.forEach((btn) => btn.classList.remove("selected"));
+
+          button.classList.add("selected");
+
+          selectedValue = button.getAttribute("data-value");
+        });
+      });
+
+      const submitButton = document.querySelector(".submit");
+
+      submitButton.addEventListener("click", () => {
+        if (selectedValue) {
+          console.log(`Selected value: ${selectedValue}`);
+
+          const wrapper = document.querySelector(".wrapper");
+          wrapper.innerHTML = `
+          <div 
+          style="text-align: center; 
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          flex-direction: column">
+
+          <img src="images/illustration-thank-you.svg" alt="Thank you icon" 
+          style="width: 30vh; 
+          height: auto; 
+          margin: 2vh 0 2vh 0" />
+
+          <p style="margin-top: 2vh; 
+          padding: 2vh 0; 
+          border-radius: 30px; 
+          width: 50%; 
+          background-color: hsl(210, 16%, 22%); 
+          font-size: 15px; 
+          color: hsl(25, 97%, 53%)">
+          
+          You selected ${selectedValue} out of 5
+          </p>
+
+          <h1>Thank you!</h1>
+
+          <p>We appreciate you taking the time to give a rating. If you ever need more support, don't hesitate to get in touch!</p>
+            
+          </div>
+        `;
+        } else {
+          alert("Please select a rating before submitting.");
+        }
+      });
+    </script>
   </body>
 </html>
